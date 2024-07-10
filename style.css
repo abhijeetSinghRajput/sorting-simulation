@@ -48,19 +48,23 @@ body{
     margin-bottom: 20px;
 }
 .bar{
-    border-radius: 5px;
+    border-radius: 3px;
     height: 100%;
     width: 20px;
     background-color: var(--clr-primary);
 }
 .bar.active{
     background-color: rgb(177, 195, 246);
+    background-color: #79d72e;
 }
 .range{
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
     gap: 10px;
+}
+.range span{
+    min-width: 50px;
 }
 
 input[type="range"]::-moz-range-thumb{

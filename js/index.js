@@ -9,9 +9,27 @@ barsRange.addEventListener('input', (event) => {
     addBars(event.target.value);
 });
 
+const barsSpeed = document.getElementById('barsSpeed');
+const speedValue = document.getElementById('speedValue');
+let animationDelay = 20;
+
+// Update delay based on Speed input value
+let speed;
+barsSpeed.addEventListener('input', (event) => {
+    speed = event.target.value;
+    speedValue.textContent = speed;
+
+    if (speed <= 50) {
+        animationDelay =  0.375 * speed + 1.25;
+    } else {
+        animationDelay =  1.6 * speed - 60;
+    }
+});
+
+
 let bars = [];
+let arr = [];
 addBars(50);
-scramble();
 
 function sort() {
     if (isSorted()) return;
@@ -33,6 +51,21 @@ function isSorted() {
         }
     }
     return true;
+}
+function check() {
+    for (let i = 0; i < bars.length; ++i) {
+        setTimeout(() => {
+            if (bars[i].getAttribute('value') == i) {
+                bars[i].classList.add('active');
+            }
+        }, 10 * i);
+    }
+
+    setTimeout(() => {
+        bars.forEach(bar => {
+            bar.classList.remove('active');
+        })
+    }, 10 * bars.length);
 }
 
 function swapElement(e1, e2) {
@@ -67,6 +100,7 @@ function addBars(count) {
         bars.push(bar);
         height += d;
     }
+    scramble();
 }
 
 
@@ -77,6 +111,10 @@ function scramble() {
         let rand2 = Math.floor(Math.random() * bars.length);
         swapElement(bars[rand1], bars[rand2]);
     }
+    arr = [];
+    bars.forEach(bar => {
+        arr.push(+bar.getAttribute('value'));
+    });
 }
 
 
@@ -100,6 +138,9 @@ algorithms.forEach(algorithm => {
         selectedAlgorithm = algorithm.textContent;
         sortBtn.textContent = selectedAlgorithm;
         dropBox.classList.remove('active');
+        if(isSorted()){
+            scramble();
+        }
     })
 })
 
