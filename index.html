@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sorting simulation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container"></div>
+    <div class="range">
+        <label for="barsRange">bars: </label>
+        <input type="range" id="barsRange" min="10" max="100" step="10" value="50">
+        <span id="barsValue">50</span>
+    </div>
+    <div class="controlls">
+        <div class="drop-box">
+            <div class="btn secondary">
+                <span>algorithms</span>
+                <img src="./assets/icon/caret-down.svg" alt="">
+            </div>
+
+            <ul class="drop-menu">
+                <li class="active">Bubble Sort</li>
+                <li>Selection Sort</li>
+                <li>Insertion Sort</li>
+                <li>Quick Sort</li>
+                <li>Merge Sort</li>
+                <li>Heap Sort</li>
+            </ul>
+        </div>
+        <button class="btn primary" id="sort" onclick="sort()">bubble sort</button>
+        <button class="btn secondary" id="scramble" onclick="scramble()">scramble</button>
+    </div>
+
+</body>
+<script src="js/algorithm.js"></script>
+<script src="js/index.js"></script>
+
+</html>
