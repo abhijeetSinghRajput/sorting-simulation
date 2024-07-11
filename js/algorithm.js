@@ -14,7 +14,7 @@ function bubbleSort() {
             }
         }
     }
-    animate(swaps, 'swap');
+    simulate(swaps, 'swap');
 }
 
 
@@ -31,7 +31,7 @@ function selectionSort() {
             }
         }
     }
-    animate(swaps, 'swap');
+    simulate(swaps, 'swap');
 }
 
 function insertionSort() {
@@ -48,13 +48,13 @@ function insertionSort() {
             });
         }
     }
-    animate(swaps, 'swap');
+    simulate(swaps, 'swap');
 }
 
 function quickSort(low, high) {
     swaps = [];
     helperQuickSort(low, high);
-    animate(swaps, 'swap');
+    simulate(swaps, 'swap');
 }
 
 function helperQuickSort(low, high) {
@@ -96,7 +96,7 @@ let assignment = [];
 function mergeSort(low, high) {
     assignment = [];
     helperMergeSort(low, high);
-    animate(assignment, 'assign');
+    simulate(assignment, 'assign');
 }
 
 function helperMergeSort(low, high) {
@@ -158,7 +158,7 @@ function heapSort() {
         downHeapify(0, i);
     }
 
-    animate(swaps, 'swap');
+    simulate(swaps, 'swap');
 }
 
 function downHeapify(i, n) {
@@ -197,20 +197,56 @@ function getHeight(value) {
     return (100 / bars.length) * (value + 1);
 }
 
-function animate(arr, type) {
+let timeoutIds = [];
+function clearTimeouts(){
+    if(timeoutIds.length == 0) return;
+    for(let id of timeoutIds){
+        clearTimeout(id);
+    }
+    timeoutIds = [];
+}
+let isSimulating = false;
 
+function simulate(arr, type) {
+    clearTimeouts();
+    isSimulating = true;
     for (let i = 0; i < arr.length; ++i) {
-        setTimeout(() => {
+        let id = setTimeout(() => {
             if (type == 'swap') {
-                swapElement(bars[arr[i].x], bars[arr[i].y]);
-            }
-            else {
-                bars[arr[i].index].style.height = `${getHeight(arr[i].value)}%`;
-                bars[arr[i].index].setAttribute('value', arr[i].value);
-                bars[arr[i].index].title = arr[i].value;
+                let bar1 = bars[arr[i].x];
+                let bar2 = bars[arr[i].y];
+                
+                bar1.classList.add('active');
+                bar2.classList.add('active');
+
+                swapElement(bar1, bar2);
+
+                setTimeout(() => {
+                    bar1.classList.remove('active');
+                    bar2.classList.remove('active');
+                }, animationDelay);
+            } else {
+                let bar = bars[arr[i].index];
+                
+                bar.classList.add('active');
+
+                bar.style.height = `${getHeight(arr[i].value)}%`;
+                bar.setAttribute('value', arr[i].value);
+                bar.title = arr[i].value;
+
+                setTimeout(() => {
+                    bar.classList.remove('active');
+                }, animationDelay);
             }
         }, animationDelay * i);
+
+        timeoutIds.push(id);
     }
-    
-    setTimeout(check, animationDelay * arr.length);
+
+    let finalTimeoutId = setTimeout(()=>{
+        check();
+        isSimulating = false;
+    }, animationDelay * arr.length);
+
+    timeoutIds.push(finalTimeoutId);
 }

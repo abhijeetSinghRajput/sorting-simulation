@@ -14,25 +14,34 @@ const speedValue = document.getElementById('speedValue');
 let animationDelay = 20;
 
 // Update delay based on Speed input value
-let speed;
+let delay = [100, 80, 60, 40, 20, 17, 14, 11, 8, 5];
+
 barsSpeed.addEventListener('input', (event) => {
     speed = event.target.value;
     speedValue.textContent = speed;
-
-    if (speed <= 50) {
-        animationDelay =  0.375 * speed + 1.25;
-    } else {
-        animationDelay =  1.6 * speed - 60;
-    }
+    animationDelay = delay[(speed / 10) - 1];
+    sort();
 });
+
 
 
 let bars = [];
 let arr = [];
 addBars(50);
 
+function stopSimulation() {
+    clearTimeouts();
+    bars.forEach((bar, index) => {
+        arr[index] = +bar.getAttribute('value');
+    })
+}
 function sort() {
     if (isSorted()) return;
+    //stop the simulation
+    if (isSimulating) {
+        stopSimulation();
+    }
+
     switch (selectedAlgorithm) {
         case 'Bubble Sort': bubbleSort(); break;
         case 'Selection Sort': selectionSort(); break;
@@ -84,6 +93,8 @@ function swapElement(e1, e2) {
 
 
 function addBars(count) {
+    if(isSimulating) stopSimulation();
+
     container.innerHTML = '';
     bars = [];
 
@@ -104,7 +115,9 @@ function addBars(count) {
 }
 
 
-function scramble() {
+function scramble({ smooth = false } = {}) {
+    if(isSimulating) stopSimulation();
+
     let count = bars.length * 10;
     for (let i = 0; i < count; ++i) {
         let rand1 = Math.floor(Math.random() * bars.length);
@@ -138,7 +151,7 @@ algorithms.forEach(algorithm => {
         selectedAlgorithm = algorithm.textContent;
         sortBtn.textContent = selectedAlgorithm;
         dropBox.classList.remove('active');
-        if(isSorted()){
+        if (isSorted()) {
             scramble();
         }
     })

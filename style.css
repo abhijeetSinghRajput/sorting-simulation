@@ -54,8 +54,7 @@ body{
     background-color: var(--clr-primary);
 }
 .bar.active{
-    background-color: rgb(177, 195, 246);
-    background-color: #79d72e;
+    background-color: rgb(246, 189, 32);
 }
 .range{
     display: flex;
@@ -75,7 +74,7 @@ input[type="range"]::-moz-range-thumb{
 .controlls{
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
 }
 .drop-box{
     position: relative;
